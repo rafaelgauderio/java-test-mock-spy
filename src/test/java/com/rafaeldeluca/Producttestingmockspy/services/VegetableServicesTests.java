@@ -106,5 +106,18 @@ public class VegetableServicesTests {
         });
     }
 
+    @Test
+    public void updateShouldReturnProductDTOWhenDataIsValidAndIdExists () {
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doNothing().when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        VegetableDTO updateResult = serviceSpy.update(existingId, vegetableDTO);
+
+        Assertions.assertNotNull(updateResult);
+        Assertions.assertEquals(updateResult.getId(), existingId);
+        Assertions.assertEquals(updateResult.getDescription(), vegetableDTO.getDescription());
+        Assertions.assertEquals(updateResult.getPrice(),vegetableDTO.getPrice());
+    }
+
 
 }
