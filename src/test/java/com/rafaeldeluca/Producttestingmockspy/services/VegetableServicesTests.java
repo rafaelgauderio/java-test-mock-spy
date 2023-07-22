@@ -4,7 +4,9 @@ import com.rafaeldeluca.Producttestingmockspy.dto.VegetableDTO;
 import com.rafaeldeluca.Producttestingmockspy.entities.Vegetable;
 import com.rafaeldeluca.Producttestingmockspy.repositories.VegetableRepository;
 import com.rafaeldeluca.Producttestingmockspy.services.exceptions.ResourceNotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -46,10 +48,26 @@ public class VegetableServicesTests {
         // simulando buscar um vegetale por Id existente e não existente no banco
         Mockito.when(repository.getReferenceById(existingId)).thenReturn(vegetable);
         Mockito.when(repository.getReferenceById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
-
-
     }
 
-    // simular getReferenceById quando existe quando não existe o Id do vegetable no banco de dados
+    // testando inserir um produto com dados validos
+    @Test
+    public void insertShouldReturnProductDTOWhenValidaDataIsValid (){
+        // não fazer nada quando os dados forem validos
+        // não ó possivel mockar metodos de dentro da propria classe service
+        // sendo que é a classe service que está sendo testada,
+        // @spy permite encapsular uma estância de um objeto
+        // usar o spy para mockar o método validaData da propria classe service
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doNothing().when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        VegetableDTO result = serviceSpy.insert(vegetableDTO);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.getDescription(),"Abacaxi Orgânico");
+        Assertions.assertEquals(result.getPrice(),8.90);
+    }
+
+
 
 }
