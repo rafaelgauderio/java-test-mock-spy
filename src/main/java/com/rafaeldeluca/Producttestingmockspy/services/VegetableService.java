@@ -29,7 +29,9 @@ public class VegetableService {
     @Transactional(readOnly = false)
     public VegetableDTO update (Long id, VegetableDTO dto) {
 
+
         try {
+            validateVegetableData(dto);
             Vegetable entity = new Vegetable();
             entity = repository.getReferenceById(id);
             entity.setDescription(dto.getDescription());

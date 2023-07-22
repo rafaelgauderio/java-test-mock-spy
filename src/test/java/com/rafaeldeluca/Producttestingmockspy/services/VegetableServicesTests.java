@@ -119,5 +119,41 @@ public class VegetableServicesTests {
         Assertions.assertEquals(updateResult.getPrice(),vegetableDTO.getPrice());
     }
 
+    @Test
+    public void updateShouldReturnInvalidDataExceptionWhenVegetableDescriptionIsNullAndIdExists () {
+        vegetableDTO.setDescription("");
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+           VegetableDTO updateResult = serviceSpy.update(existingId, vegetableDTO);
+        });
+    }
+
+    @Test
+    public void updateShouldReturnInvalidDataExceptionWhenVegetablePriceIsNegativeAndIdExists () {
+        vegetableDTO.setPrice(-15.20);
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+           VegetableDTO updateResult = serviceSpy.update(existingId, vegetableDTO);
+        });
+    }
+
+    @Test
+    public void updateShouldReturnInvalidDataExceptionWhenVegetablePriceIsZeroAndIdExists () {
+        vegetableDTO.setPrice(0.0);
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(InvalidDataException.class, ()  -> {
+           VegetableDTO updateResult = serviceSpy.update(existingId,vegetableDTO);
+        });
+    }
+
 
 }
