@@ -155,5 +155,53 @@ public class VegetableServicesTests {
         });
     }
 
+    @Test
+    public void updateShouldReturnResourceNotFoundExceptionWhenDataIsvalidAndNonExistingIdIsInform () {
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(ResourceNotFoundException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+           VegetableDTO updateResult = serviceSpy.update(nonExistingId, vegetableDTO);
+        });
+    }
+
+    @Test
+    void updateShouldReturnInvalidDataExceptionWhenPriceIsZeroAndNonExistingIdIsInform () {
+        vegetableDTO.setPrice(0.0);
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+            VegetableDTO updateResult = serviceSpy.update(nonExistingId, vegetableDTO);
+        });
+    }
+
+    @Test
+    void updateShouldReturnInvalidDataExceptionWhenPriceIsNegativeAndNonExistingIdIsInform () {
+        vegetableDTO.setPrice(-15.3);
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+            VegetableDTO updateResult = serviceSpy.update(nonExistingId, vegetableDTO);
+        });
+    }
+
+    @Test
+    void updateShouldReturnInvalidDataExceptionWhenDescriptionIsBlankAndNonExistingIdIsInform () {
+        vegetableDTO.setDescription("");
+
+        VegetableService serviceSpy = Mockito.spy(service);
+        Mockito.doThrow(InvalidDataException.class).when(serviceSpy).validateVegetableData(vegetableDTO);
+
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+           VegetableDTO updateResult = serviceSpy.update(nonExistingId, vegetableDTO);
+        });
+
+    }
+
 
 }
